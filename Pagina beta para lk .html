@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal WotLK Local</title>
+<style>
+/* Estilos generales con tema WotLK */
+body {
+  background: url('https://images.blz-contentstack.com/v3/assets/bltc965041283bac56c/blt07f639e665f1f647/60a27aec3b1b1e0f3a4e6f0e/bg-repeat-blue.jpg') #0a0a1a;
+  color: #aaccff;
+  font-family: 'MedievalSharp', 'Segoe UI', Tahoma, sans-serif;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+/* Marco estilo WotLK */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  border: 4px solid;
+  border-image: linear-gradient(to bottom, #8db5e5, #4a6d9c, #2a3a5a) 1;
+  background: rgba(26, 42, 74, 0.8);
+  box-shadow: 0 0 30px rgba(100, 150, 255, 0.5);
+  border-radius: 5px;
+  padding: 25px;
+  backdrop-filter: blur(5px);
+}
+
+/* Título con efecto de texto WotLK */
+h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #ffd700;
+  text-shadow: 
+    3px 3px 0 #1a3300,
+    -1px -1px 0 #1a3300,
+    1px -1px 0 #1a3300,
+    -1px 1px 0 #1a3300;
+  margin-bottom: 30px;
+  letter-spacing: 2px;
+  animation: textGlow 3s infinite alternate;
+  position: relative;
+}
+
+@keyframes textGlow {
+  0% { text-shadow: 0 0 10px #55ff00, 3px 3px 0 #1a3300; }
+  100% { text-shadow: 0 0 20px #aaff00, 3px 3px 0 #1a3300; }
+}
+
+h1::after {
+  content: '❄';
+  position: absolute;
+  right: 10%;
+  top: 0;
+  font-size: 1.5rem;
+  opacity: 0.7;
+  animation: sparkle 2s infinite alternate;
+}
+
+@keyframes sparkle {
+  0% { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Barra de navegación */
+.nav-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  flex-wrap: wrap;
+}
+
+/* Botones con efecto RGB azul-morado */
+.btn {
+  background: linear-gradient(to bottom, #2a4a7c, #1a2a4a, #0a0a1a);
+  color: #aaccff;
+  font-size: 1.1rem;
+  padding: 10px 20px;
+  border: 3px solid;
+  border-image: linear-gradient(to bottom, #8db5e5, #4a6d9c, #2a3a5a) 1;
+  text-decoration: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+  position: relative;
+  overflow: hidden;
+  animation: rgbText 8s infinite linear;
+  box-shadow: 0 0 15px rgba(100, 150, 255, 0.5);
+  white-space: nowrap;
+}
+
+.btn::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    rgba(255,255,255,0.1) 0%, 
+    rgba(255,255,255,0.3) 50%, 
+    rgba(255,255,255,0.1) 100%);
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.btn:hover::after {
+  opacity: 1;
+}
+
+@keyframes rgbText {
+  0% { color: #4a8ce5; }
+  25% { color: #8c4ae5; }
+  50% { color: #e54a8c; }
+  75% { color: #e58c4a; }
+  100% { color: #4a8ce5; }
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 25px rgba(100, 150, 255, 0.7);
+}
+
+.btn i {
+  margin-right: 8px;
+}
+
+/* Secciones */
+.section {
+  display: none;
+  padding: 20px;
+  background: rgba(10, 20, 40, 0.6);
+  border: 2px solid #2a4a7c;
+  border-radius: 5px;
+  margin-top: 20px;
+  animation: borderPulse 3s infinite alternate;
+}
+
+@keyframes borderPulse {
+  0% { box-shadow: 0 0 10px rgba(100, 150, 255, 0.3); }
+  100% { box-shadow: 0 0 20px rgba(140, 180, 255, 0.6); }
+}
+
+.section h2 {
+  color: #8db5e5;
+  border-bottom: 2px solid #4a6d9c;
+  padding-bottom: 10px;
+  margin-top: 0;
+}
+
+/* Noticias */
+.noticias-list {
+  list-style: none;
+  padding: 0;
+}
+
+.noticias-list li {
+  background: rgba(20, 40, 70, 0.3);
+  margin-bottom: 15px;
+  padding: 15px;
+  border-left: 4px solid #4a6d9c;
+  transition: all 0.3s;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.noticias-list li:hover {
+  background: rgba(30, 60, 100, 0.4);
+  border-left-color: #8db5e5;
+}
+
+.noticias-list li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: all 0.5s;
+}
+
+.noticias-list li:hover::after {
+  left: 100%;
+}
+
+.noticias-list strong {
+  color: #ffd700;
+  display: block;
+  margin-bottom: 5px;
+  font-size: 1.1rem;
+}
+
+.news-date {
+  color: #8db5e5;
+  font-size: 0.9rem;
+  margin-top: 5px;
+  display: block;
+  font-style: italic;
+}
+
+/* Videos */
+.video-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.video-item {
+  background: rgba(10, 20, 40, 0.5);
+  border: 2px solid #2a4a7c;
+  border-radius: 5px;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.video-item:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+  border-color: #4a8ce5;
+}
+
+.video-container {
+  position: relative;
+  width: 100%;
+}
+
+.video-container video {
+  width: 100%;
+  display: block;
+}
+
+.video-info {
+  padding: 15px;
+  transition: all 0.3s;
+  background: linear-gradient(to bottom, rgba(20, 40, 70, 0.5), rgba(10, 20, 40, 0.5));
+}
+
+.video-item:hover .video-info {
+  background: linear-gradient(to bottom, rgba(30, 60, 100, 0.7), rgba(10, 20, 40, 0.7));
+}
+
+.descarga-btn {
+  background: linear-gradient(to bottom, #3a6c1e, #1e3a0f);
+  color: #ffd700;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-family: 'MedievalSharp';
+  transition: all 0.3s;
+  display: inline-block;
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.descarga-btn:hover {
+  background: linear-gradient(to bottom, #4a8c2e, #2e4a1f);
+  box-shadow: 0 0 10px rgba(100, 255, 100, 0.5);
+}
+
+.btn-text {
+  position: relative;
+  z-index: 1;
+}
+
+.download-progress {
+  margin-top: 10px;
+  background: rgba(20, 40, 70, 0.5);
+  border-radius: 3px;
+  overflow: hidden;
+  display: none;
+}
+
+.progress-bar {
+  height: 10px;
+  background: linear-gradient(to right, #3a6c1e, #8db5e5);
+  width: 0%;
+  transition: width 0.3s;
+}
+
+.progress-text {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 5px;
+  color: #aaccff;
+}
+
+/* Estado del servidor */
+.server-status {
+  text-align: center;
+  padding: 20px;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.online {
+  background: #00ff00;
+  box-shadow: 0 0 10px #00ff00;
+}
+
+.offline {
+  background: #ff0000;
+  box-shadow: 0 0 10px #ff0000;
+}
+
+.realmlist {
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(10, 20, 40, 0.5);
+  border: 1px solid #4a6d9c;
+  border-radius: 3px;
+  font-family: monospace;
+  word-break: break-all;
+}
+
+/* Efecto de nieve */
+.snow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.snowflake {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to { transform: translateY(100vh); }
+}
+
+/* Estilos para noticias dinámicas */
+.loading-container {
+  text-align: center;
+  padding: 20px;
+  display: none;
+}
+
+.loading-spinner {
+  border: 5px solid #2a4a7c;
+  border-top: 5px solid #8db5e5;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 15px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.btn-refresh {
+  background: rgba(42, 74, 124, 0.3);
+  border: 1px solid #4a6d9c;
+  color: #aaccff;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  margin-left: 15px;
+  vertical-align: middle;
+  transition: all 0.3s;
+}
+
+.btn-refresh:hover {
+  background: rgba(42, 74, 124, 0.5);
+}
+
+/* Estilos para el modal de noticias */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 20, 40, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.modal-content {
+  background: linear-gradient(to bottom, #1a2a4a, #0a0a1a);
+  margin: 10% auto;
+  padding: 25px;
+  border: 3px solid #4a6d9c;
+  border-radius: 5px;
+  width: 80%;
+  max-width: 700px;
+  position: relative;
+  box-shadow: 0 0 30px rgba(100, 150, 255, 0.7);
+  animation: modalFadeIn 0.3s;
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-50px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.close-modal {
+  position: absolute;
+  right: 20px;
+  top: 15px;
+  color: #aaccff;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.close-modal:hover {
+  color: #ffd700;
+  transform: rotate(90deg);
+}
+
+.news-date {
+  color: #8db5e5;
+  font-size: 0.9rem;
+  text-align: right;
+  margin-top: 20px;
+  font-style: italic;
+}
+
+/* Mostrar sección activa */
+.active-section {
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  .btn {
+    font-size: 1rem;
+    padding: 8px 15px;
+  }
+  
+  .video-gallery {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-content {
+    width: 95%;
+    margin: 20% auto;
+  }
+}
+</style>
+</head>
+<body>
+<!-- Efecto de nieve -->
+<div class="snow" id="snow"></div>
+
+<!-- Modal de noticias -->
+<div id="newsModal" class="modal">
+  <div class="modal-content">
+    <span class="close-modal">&times;</span>
+    <h2 id="modalTitle"></h2>
+    <p id="modalContent"></p>
+    <p id="modalDate" class="news-date"></p>
+  </div>
+</div>
+
+<div class="container">
+  <h1>Portal WotLK Local</h1>
+  
+  <div class="nav-buttons">
+    <button id="btnNoticias" class="btn active-btn"><i>📜</i> Noticias</button>
+    <button id="btnVideos" class="btn"><i>🎬</i> Videos</button>
+    <button id="btnEstado" class="btn"><i>⚔️</i> Estado</button>
+  </div>
+  
+  <!-- Sección Noticias -->
+  <div id="noticias" class="section active-section">
+    <h2>Últimas Noticias <button id="refreshNews" class="btn-refresh">🔄 Actualizar</button></h2>
+    <div id="loadingNews" class="loading-container">
+      <div class="loading-spinner"></div>
+      <p>Cargando noticias...</p>
+    </div>
+    <ul class="noticias-list" id="newsList">
+      <!-- Las noticias se cargarán dinámicamente -->
+    </ul>
+  </div>
+  
+  <!-- Sección Videos -->
+  <div id="videos" class="section">
+    <h2>Videos Locales</h2>
+    <div class="video-gallery">
+      <!-- Video 1 -->
+      <div class="video-item">
+        <div class="video-container">
+          <video controls poster="media/thumbnails/video1.jpg">
+            <source src="media/videos/video1.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+          </video>
+        </div>
+        <div class="video-info">
+          <h3>Guía de Inicio</h3>
+          <button class="descarga-btn" onclick="initiateDownload('media/videos/video1.mp4', 'guia_inicio.mp4')">
+            <i>⬇️</i> <span class="btn-text">Descargar Video</span>
+            <div class="download-progress">
+              <div class="progress-bar"></div>
+              <span class="progress-text">0%</span>
+            </div>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Video 2 -->
+      <div class="video-item">
+        <div class="video-container">
+          <video controls poster="media/thumbnails/video2.jpg">
+            <source src="media/videos/video2.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+          </video>
+        </div>
+        <div class="video-info">
+          <h3>Tutorial de Mazmorras</h3>
+          <button class="descarga-btn" onclick="initiateDownload('media/videos/video2.mp4', 'tutorial_mazmorras.mp4')">
+            <i>⬇️</i> <span class="btn-text">Descargar Video</span>
+            <div class="download-progress">
+              <div class="progress-bar"></div>
+              <span class="progress-text">0%</span>
+            </div>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Video 3 -->
+      <div class="video-item">
+        <div class="video-container">
+          <video controls poster="media/thumbnails/video3.jpg">
+            <source src="media/videos/video3.mp4" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+          </video>
+        </div>
+        <div class="video-info">
+          <h3>Consejos PvP</h3>
+          <button class="descarga-btn" onclick="initiateDownload('media/videos/video3.mp4', 'consejos_pvp.mp4')">
+            <i>⬇️</i> <span class="btn-text">Descargar Video</span>
+            <div class="download-progress">
+              <div class="progress-bar"></div>
+              <span class="progress-text">0%</span>
+            </div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Sección Estado del Servidor -->
+  <div id="estado" class="section">
+    <h2>Estado del Servidor</h2>
+    <div class="server-status">
+      <h3>Estado: <span id="statusText">ONLINE</span> <span id="statusIndicator" class="status-indicator online"></span></h3>
+      <p>Jugadores conectados: <strong id="players">24</strong></p>
+      <p>Último reinicio: <strong id="lastRestart">Hace 3 horas</strong></p>
+      
+      <div class="realmlist">
+        <strong>Realmlist:</strong> set realmlist localhost
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Datos de noticias simuladas (en un caso real, estos vendrían de una API)
+const newsData = [
+  {
+    id: 1,
+    title: "¡Bienvenido al servidor local WotLK!",
+    content: "Disfruta de una experiencia clásica de Wrath of the Lich King en tu propio servidor. Hemos preparado eventos especiales para todos los jugadores. El servidor cuenta con todas las raids y dungeons disponibles en la versión 3.3.5a, con tasas de experiencia x1 para una experiencia auténtica. ¡Reúne a tus amigos y adéntrate en Northrend!",
+    date: "2023-05-15",
+    image: "media/news/welcome.jpg"
+  },
+  {
+    id: 2,
+    title: "Evento especial de lanzamiento",
+    content: "Participa en las primeras incursiones y gana recompensas exclusivas durante este mes. Las incursiones se realizarán cada fin de semana con horarios especiales:\n\n- Viernes: Naxxramas 25\n- Sábado: Ojo de la Eternidad 25\n- Domingo: La Cámara de Archavon 25\n\nLos primeros equipos en completar cada raid recibirán títulos exclusivos y monturas especiales.",
+    date: "2023-05-18",
+    image: "media/news/event.jpg"
+  },
+  {
+    id: 3,
+    title: "Actualización de servidor v1.2.0",
+    content: "Mejoras en la estabilidad y corrección de bugs menores. Cambios destacados:\n\n- Corregido el problema con los NPCs en Dragonblight\n- Mejorado el pathfinding en mazmorras\n- Optimizado el rendimiento para mejor experiencia en raids con muchos jugadores\n- Añadidos nuevos comandos para jugadores (.respec, .unstuck)\n- Solucionado el problema con los premios de honor en BG\n\nEl servidor se reiniciará automáticamente a las 03:00 AM para aplicar los cambios.",
+    date: "2023-05-20",
+    image: "media/news/update.jpg"
+  },
+  {
+    id: 4,
+    title: "Nueva raid: La Cámara de Archavon",
+    content: "Ya está disponible la primera raid del servidor. Reúne a tu hermandad y enfrenta a Archavon el Vigía de Piedra en el Coliseo de Orgrimmar.\n\nRequisitos:\n- Nivel 80\n- Al menos 10 jugadores\n- Resistencia a Frost recomendada\n\nPremios:\n- Equipo PvP de nivel 200\n- Posibilidad de obtener monturas exclusivas\n- Títulos de gladiador\n\nLa raid se reinicia cada 7 días.",
+    date: "2023-05-22",
+    image: "media/news/raid.jpg"
+  }
+];
+
+// Variables para descargas
+const activeDownloads = {};
+
+document.addEventListener('DOMContentLoaded', function() {
+  createSnow();
+  setupNavigation();
+  loadNews();
+  setupModal();
+  setupRefreshButton();
+  simulateServerStatus();
+  
+  // Mostrar noticias por defecto
+  document.getElementById('btnNoticias').classList.add('active-btn');
+  document.getElementById('noticias').classList.add('active-section');
+});
+
+// Crear efecto de nieve
+function createSnow() {
+  const snowContainer = document.getElementById('snow');
+  for (let i = 0; i < 80; i++) {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+    snowflake.style.left = Math.random() * 100 + '%';
+    snowflake.style.width = Math.random() * 5 + 2 + 'px';
+    snowflake.style.height = snowflake.style.width;
+    snowflake.style.opacity = Math.random();
+    snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
+    snowflake.style.animationDelay = Math.random() * 5 + 's';
+    snowContainer.appendChild(snowflake);
+  }
+}
+
+// Navegación entre secciones
+function setupNavigation() {
+  const buttons = ['btnNoticias', 'btnVideos', 'btnEstado'];
+  const sections = ['noticias', 'videos', 'estado'];
+  
+  buttons.forEach((btnId, index) => {
+    document.getElementById(btnId).addEventListener('click', () => {
+      // Remover clases activas
+      buttons.forEach(b => document.getElementById(b).classList.remove('active-btn'));
+      sections.forEach(s => document.getElementById(s).classList.remove('active-section'));
+      
+      // Agregar clases activas
+      document.getElementById(btnId).classList.add('active-btn');
+      document.getElementById(sections[index]).classList.add('active-section');
+    });
+  });
+}
+
+// Sistema de noticias dinámicas
+function loadNews() {
+  const newsList = document.getElementById('newsList');
+  const loading = document.getElementById('loadingNews');
+  
+  // Mostrar carga
+  newsList.innerHTML = '';
+  loading.style.display = 'block';
+  
+  // Simular carga desde API (setTimeout para simular demora de red)
+  setTimeout(() => {
+    newsData.forEach(news => {
+      const li = document.createElement('li');
+      li.dataset.newsId = news.id;
+      li.innerHTML = `
+        <strong>${news.title}</strong>
+        <p>${news.content.substring(0, 100)}${news.content.length > 100 ? '...' : ''}</p>
+        <span class="news-date">${formatDate(news.date)}</span>
+      `;
+      newsList.appendChild(li);
+    });
+    
+    loading.style.display = 'none';
+    
+    // Agregar event listeners a las noticias
+    document.querySelectorAll('.noticias-list li').forEach(item => {
+      item.addEventListener('click', function() {
+        const newsId = parseInt(this.dataset.newsId);
+        showNewsModal(newsId);
+      });
+    });
+  }, 800);
+}
+
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString('es-ES', options);
+}
+
+function showNewsModal(newsId) {
+  const news = newsData.find(item => item.id === newsId);
+  if (!news) return;
+  
+  const modal = document.getElementById('newsModal');
+  document.getElementById('modalTitle').textContent = news.title;
+  
+  // Mantener saltos de línea en el contenido
+  const formattedContent = news.content.replace(/\n/g, '<br><br>');
+  document.getElementById('modalContent').innerHTML = formattedContent;
+  
+  document.getElementById('modalDate').textContent = formatDate(news.date);
+  modal.style.display = 'block';
+}
+
+function setupModal() {
+  const modal = document.getElementById('newsModal');
+  const closeBtn = document.querySelector('.close-modal');
+  
+  closeBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+  });
+  
+  window.addEventListener('click', (event) => {
+    if (event.target === modal) {
+      modal.style.display = 'none';
+    }
+  });
+}
+
+function setupRefreshButton() {
+  document.getElementById('refreshNews').addEventListener('click', () => {
+    loadNews();
+  });
+}
+
+// Sistema de descarga mejorado
+function initiateDownload(url, filename) {
+  if (activeDownloads[url]) {
+    alert('Esta descarga ya está en progreso');
+    return;
+  }
+  
+  const btn = event.target.closest('.descarga-btn');
+  const progressBar = btn.querySelector('.progress-bar');
+  const progressText = btn.querySelector('.progress-text');
+  const btnText = btn.querySelector('.btn-text');
+  const downloadProgress = btn.querySelector('.download-progress');
+  
+  // Mostrar elementos de progreso
+  btnText.textContent = 'Preparando...';
+  downloadProgress.style.display = 'block';
+  
+  // Registrar la descarga
+  activeDownloads[url] = true;
+  
+  // Simular preparación
+  setTimeout(() => {
+    btnText.textContent = 'Descargando...';
+    
+    // Simular descarga progresiva
+    let progress = 0;
+    const interval = setInterval(() => {
+      progress += Math.random() * 10;
+      if (progress > 100) progress = 100;
+      
+      progressBar.style.width = `${progress}%`;
+      progressText.textContent = `${Math.round(progress)}%`;
+      
+      if (progress === 100) {
+        clearInterval(interval);
+        setTimeout(() => {
+          btnText.textContent = 'Descarga completa';
+          progressText.textContent = 'Listo!';
+          
+          // Crear enlace de descarga real (para entorno local)
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          
+          setTimeout(() => {
+            btnText.textContent = 'Descargar Video';
+            downloadProgress.style.display = 'none';
+            progressBar.style.width = '0%';
+            progressText.textContent = '0%';
+            delete activeDownloads[url];
+          }, 2000);
+        }, 500);
+      }
+    }, 200);
+  }, 1000);
+}
+
+// Simulación de estado del servidor
+function simulateServerStatus() {
+  const statusIndicator = document.getElementById('statusIndicator');
+  const statusText = document.getElementById('statusText');
+  const playersElement = document.getElementById('players');
+  
+  // Función para actualizar estado
+  function updateStatus() {
+    const isOnline = Math.random() > 0.1; // 90% de probabilidad de estar online
+    
+    if (isOnline) {
+      statusIndicator.className = 'status-indicator online';
+      statusText.textContent = 'ONLINE';
+      
+      // Simular jugadores conectados (entre 10 y 150)
+      const players = Math.floor(Math.random() * 140) + 10;
+      playersElement.textContent = players;
+      
+      // Cambiar color según población
+      if (players > 100) {
+        playersElement.style.color = '#4a8c2e'; // Verde
+      } else if (players > 50) {
+        playersElement.style.color = '#8db5e5'; // Azul
+      } else {
+        playersElement.style.color = '#e58c4a'; // Naranja
+      }
+    } else {
+      statusIndicator.className = 'status-indicator offline';
+      statusText.textContent = 'OFFLINE';
+      playersElement.textContent = '0';
+      playersElement.style.color = '#ff6b6b';
+    }
+    
+    // Simular último reinicio
+    const hours = Math.floor(Math.random() * 12);
+    const restartText = document.getElementById('lastRestart');
+    restartText.textContent = hours === 0 ? 'Menos de 1 hora' : `Hace ${hours} hora${hours !== 1 ? 's' : ''}`;
+  }
+  
+  // Actualizar inmediatamente y cada 30 segundos
+  updateStatus();
+  setInterval(updateStatus, 30000);
+}
+</script>
+</body>
+</html>
