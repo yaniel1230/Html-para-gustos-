@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal WotLK - Reinos de Blizzard</title>
+    <style>
+        /* Estilo Blizzard oficial */
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('https://images.blz-contentstack.com/v3/assets/bltc965041283bac56c/blt4f4d71e5f6e31824/60a27aec3b1b1e0f3a4e6f0f/bg-repeat.jpg') #000;
+            color: #e0e0e0;
+            font-family: 'Arial Narrow', 'Franklin Gothic Medium', Arial, sans-serif;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Logo Blizzard */
+        .blizzard-header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 0;
+            text-align: center;
+            border-bottom: 1px solid #3a3a3a;
+        }
+
+        .blizzard-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        /* Contenedor estilo WoW */
+        .wow-container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: url('https://images.blz-contentstack.com/v3/assets/bltc965041283bac56c/blt4e5a84d90ab50c98/60a27aec3b1b1e0f3a4e6f10/bg-texture.jpg') center/cover;
+            border: 3px solid;
+            border-image: linear-gradient(to bottom, #8a6b3d, #5d4a2a, #3a2e1c) 1;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Efecto de cristal de hielo */
+        .wow-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(138, 180, 248, 0.1) 0%, rgba(0, 0, 0, 0) 50%, rgba(138, 180, 248, 0.1) 100%);
+            pointer-events: none;
+        }
+
+        /* Título estilo WoW */
+        .wow-title {
+            text-align: center;
+            font-size: 2.8rem;
+            color: #ffd100;
+            text-shadow: 0 0 10px #8ab4f8, 0 0 20px #8ab4f8, 0 0 30px #8ab4f8;
+            margin: 20px 0;
+            letter-spacing: 2px;
+            font-weight: normal;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        /* Botones estilo interfaz WoW */
+        .wow-button {
+            background: linear-gradient(to bottom, #3a3a3a, #1a1a1a);
+            color: #ffd100;
+            border: 2px solid #8a6b3d;
+            padding: 10px 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            font-family: 'Arial Narrow', sans-serif;
+        }
+
+        .wow-button:hover {
+            background: linear-gradient(to bottom, #4a4a4a, #2a2a2a);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(138, 180, 248, 0.7);
+            transform: translateY(-2px);
+        }
+
+        /* Efecto de nieve mejorado con cristales de hielo */
+        .snow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="white" d="M12 2L9 5l-3-3-1 1 3 3-5 3v2l5-3 3 3 3-3 5 3v-2l-5-3 3-3-1-1-3 3-3-3z"/></svg>') center/contain no-repeat;
+            pointer-events: none;
+            animation: fall linear infinite;
+            opacity: 0.8;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-10px) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(110vh) translateX(calc(var(--sway) * 50px)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Sección de noticias estilo WoW */
+        .wow-news {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid #3a3a3a;
+            margin: 20px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .wow-news::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, #8a6b3d, #8ab4f8, #8a6b3d);
+        }
+
+        /* Barra de progreso estilo WoW */
+        .wow-progress {
+            height: 20px;
+            background: #1a1a1a;
+            border: 1px solid #3a3a3a;
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .wow-progress-bar {
+            height: 100%;
+            background: linear-gradient(to right, #3a6b1d, #8ab4f8);
+            width: 0%;
+            transition: width 0.5s;
+            position: relative;
+        }
+
+        /* Tooltip estilo WoW */
+        .wow-tooltip {
+            position: absolute;
+            background: url('https://images.blz-contentstack.com/v3/assets/bltc965041283bac56c/blt4e5a84d90ab50c98/60a27aec3b1b1e0f3a4e6f10/bg-texture.jpg') center/cover;
+            border: 2px solid #8a6b3d;
+            padding: 15px;
+            z-index: 100;
+            max-width: 300px;
+            display: none;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .wow-title { font-size: 2rem; }
+            .wow-button { padding: 8px 15px; font-size: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Blizzard -->
+    <div class="blizzard-header">
+        <img src="https://images.blz-contentstack.com/v3/assets/bltc965041283bac56c/blt8e75a9a9d50d6b9e/5ebd4f1f9792e84aef5f1c3c/blizzard_logo.svg" alt="Blizzard" class="blizzard-logo">
+    </div>
+
+    <!-- Efecto de nieve con cristales -->
+    <div class="snow" id="snow"></div>
+
+    <!-- Contenedor principal WoW -->
+    <div class="wow-container">
+        <h1 class="wow-title">Wrath of the Lich King</h1>
+        
+        <!-- Menú de navegación -->
+        <div style="text-align: center; margin: 20px 0;">
+            <button class="wow-button" id="btnNoticias">Noticias</button>
+            <button class="wow-button" id="btnVideos">Videos</button>
+            <button class="wow-button" id="btnEstado">Estado</button>
+            <button class="wow-button" id="btnPersonajes">Personajes</button>
+        </div>
+        
+        <!-- Sección Noticias -->
+        <div id="noticias" class="wow-news" style="display: block;">
+            <h2>Últimas Noticias</h2>
+            <div id="newsList">
+                <div style="margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #3a3a3a;">
+                    <h3 style="color: #ffd100;">Evento: La Plaga Avanza</h3>
+                    <p>Participa en el evento especial de invierno mientras la Plaga se fortalece en Northrend.</p>
+                    <small style="color: #8ab4f8;">Publicado: 15/12/2023</small>
+                </div>
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #ffd100;">Nuevo Raid: Ciudadela de la Corona de Hielo</h3>
+                    <p>Desafía al Rey Exánime en la nueva raid disponible para niveles 80.</p>
+                    <small style="color: #8ab4f8;">Publicado: 10/12/2023</small>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección Videos -->
+        <div id="videos" class="wow-news" style="display: none;">
+            <h2>Videos Destacados</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+                <div>
+                    <div style="background: #1a1a1a; padding: 10px; border: 1px solid #3a3a3a;">
+                        <div style="height: 150px; background: url('https://images.blz-contentstack.com/v3/assets/bltc965041283bac56c/blt4f4d71e5f6e31824/60a27aec3b1b1e0f3a4e6f0f/bg-repeat.jpg') center/cover;"></div>
+                        <h3 style="color: #ffd100;">Guía de Naxxramas</h3>
+                        <button class="wow-button" style="width: 100%;">Ver Video</button>
+                    </div>
+                </div>
+                <div>
+                    <div style="background: #1a1a1a; padding: 10px; border: 1px solid #3a3a3a;">
+                        <div style="height: 150px; background: url('https://images.blz-contentstack.com/v3/assets/bltc965041283bac56c/blt4f4d71e5f6e31824/60a27aec3b1b1e0f3a4e6f0f/bg-repeat.jpg') center/cover;"></div>
+                        <h3 style="color: #ffd100;">Consejos PvP Arena</h3>
+                        <button class="wow-button" style="width: 100%;">Ver Video</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección Estado del Servidor -->
+        <div id="estado" class="wow-news" style="display: none;">
+            <h2>Estado del Reino</h2>
+            <div style="text-align: center;">
+                <h3 style="color: #ffd100;">Estado: <span id="statusText" style="color: #00ff00;">ONLINE</span></h3>
+                <p>Jugadores conectados: <span id="players" style="color: #8ab4f8;">1,245</span></p>
+                
+                <div style="margin: 20px 0;">
+                    <h4>Progreso del Reino</h4>
+                    <div class="wow-progress">
+                        <div class="wow-progress-bar" id="realmProgress" style="width: 65%;"></div>
+                    </div>
+                    <p>65% completado - Naxxramas</p>
+                </div>
+                
+                <div style="background: rgba(0, 0, 0, 0.5); padding: 15px; border: 1px solid #3a3a3a; margin-top: 20px;">
+                    <h4 style="color: #ffd100;">Realmlist</h4>
+                    <code style="display: block; background: #1a1a1a; padding: 10px; margin: 10px 0; font-family: monospace;">set realmlist logon.worldofwarcraft.com</code>
+                    <p style="font-size: 0.9em;">Versión del cliente: 3.4.0</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sección Personajes -->
+        <div id="personajes" class="wow-news" style="display: none;">
+            <h2>Top Personajes</h2>
+            <div style="overflow-x: auto;">
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="background: rgba(58, 107, 29, 0.3);">
+                            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #3a3a3a;">Nombre</th>
+                            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #3a3a3a;">Clase</th>
+                            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #3a3a3a;">Nivel</th>
+                            <th style="padding: 10px; text-align: left; border-bottom: 1px solid #3a3a3a;">Puntuación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #3a3a3a;">Arthas</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #3a3a3a;">Caballero de la Muerte</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #3a3a3a;">80</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #3a3a3a;">9,850</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 10px; border-bottom: 1px solid #3a3a3a;">Sylvanas</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #3a3a3a;">Cazadora</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #3a3a3a;">80</td>
+                            <td style="padding: 10px; border-bottom: 1px solid #3a3a3a;">9,750</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Footer estilo Blizzard -->
+        <div style="background: rgba(0, 0, 0, 0.8); padding: 15px; margin-top: 20px; text-align: center; border-top: 1px solid #3a3a3a;">
+            <p style="margin: 0; font-size: 0.8em;">© 2023 Blizzard Entertainment, Inc. Todos los derechos reservados.</p>
+            <div style="margin-top: 10px;">
+                <a href="#" style="color: #8ab4f8; margin: 0 10px; text-decoration: none; font-size: 0.8em;">Términos</a>
+                <a href="#" style="color: #8ab4f8; margin: 0 10px; text-decoration: none; font-size: 0.8em;">Privacidad</a>
+                <a href="#" style="color: #8ab4f8; margin: 0 10px; text-decoration: none; font-size: 0.8em;">Soporte</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Crear efecto de nieve con cristales
+            function createSnow() {
+                const snowContainer = document.getElementById('snow');
+                const snowflakeCount = Math.min(150, window.innerWidth / 4);
+                
+                for (let i = 0; i < snowflakeCount; i++) {
+                    const snowflake = document.createElement('div');
+                    snowflake.className = 'snowflake';
+                    
+                    // Tamaño y posición aleatorios
+                    const size = Math.random() * 20 + 10;
+                    snowflake.style.width = `${size}px`;
+                    snowflake.style.height = `${size}px`;
+                    snowflake.style.left = `${Math.random() * 100}%`;
+                    snowflake.style.top = `${-size}px`;
+                    
+                    // Animación personalizada
+                    const duration = Math.random() * 15 + 10;
+                    snowflake.style.animationDuration = `${duration}s`;
+                    snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                    snowflake.style.setProperty('--sway', (Math.random() * 2 - 1).toFixed(2));
+                    snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+                    
+                    snowContainer.appendChild(snowflake);
+                }
+            }
+
+            // Navegación entre secciones
+            function setupNavigation() {
+                const buttons = ['btnNoticias', 'btnVideos', 'btnEstado', 'btnPersonajes'];
+                const sections = ['noticias', 'videos', 'estado', 'personajes'];
+                
+                buttons.forEach((btnId, index) => {
+                    document.getElementById(btnId).addEventListener('click', function() {
+                        // Ocultar todas las secciones
+                        sections.forEach(section => {
+                            document.getElementById(section).style.display = 'none';
+                        });
+                        
+                        // Mostrar la sección seleccionada
+                        document.getElementById(sections[index]).style.display = 'block';
+                        
+                        // Actualizar botones activos
+                        buttons.forEach(btn => {
+                            document.getElementById(btn).classList.remove('active');
+                        });
+                        this.classList.add('active');
+                    });
+                });
+            }
+
+            // Simular progreso del reino
+            function simulateRealmProgress() {
+                const progressBar = document.getElementById('realmProgress');
+                let progress = 65;
+                
+                setInterval(() => {
+                    progress += (Math.random() * 2 - 1);
+                    progress = Math.max(0, Math.min(100, progress));
+                    progressBar.style.width = `${progress.toFixed(2)}%`;
+                    progressBar.nextElementSibling.textContent = `${progress.toFixed(0)}% completado - Naxxramas`;
+                }, 5000);
+            }
+
+            // Inicializar
+            createSnow();
+            setupNavigation();
+            simulateRealmProgress();
+            
+            // Simular estado del servidor
+            setInterval(() => {
+                const statusText = document.getElementById('statusText');
+                const players = document.getElementById('players');
+                
+                if (Math.random() > 0.1) { // 90% online
+                    statusText.textContent = 'ONLINE';
+                    statusText.style.color = '#00ff00';
+                    players.textContent = Math.floor(1000 + Math.random() * 500);
+                } else {
+                    statusText.textContent = 'OFFLINE';
+                    statusText.style.color = '#ff0000';
+                    players.textContent = '0';
+                }
+            }, 30000);
+        });
+    </script>
+</body>
+</html>
